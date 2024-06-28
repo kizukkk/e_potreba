@@ -11,7 +11,7 @@
 *.sln.docstates
 
 # Application private settings
-**/appsettings.json
+/e_potreba.API/appsettings.json
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
