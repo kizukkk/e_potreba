@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\e_potreba.Application\e_potreba.Application.csproj" />
+  </ItemGroup>
+
 </Project>
