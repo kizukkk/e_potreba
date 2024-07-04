@@ -1,6 +1,16 @@
-@e_potreba.API_HostAddress = http://localhost:5213
+@e_potreba.API_HostAddress = http://localhost:5000
 
 GET {{e_potreba.API_HostAddress}}/api/v1/users
 Accept: application/json
+###
+
+POST {{e_potreba.API_HostAddress}}/api/v1/users/registry
+Content-Type: application/json
+
+{
+    "login": "user",
+    "email": "user@gmail.com",
+    "password": "qwerty"
+}
 
 ###
