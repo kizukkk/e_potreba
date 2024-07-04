@@ -1,31 +1,34 @@
 ﻿using e_potreba.Application.Repositories;
+using e_potreba.Domain.Entity.Common;
+using e_potreba.Infrastructure.DatabaseContext;
+using Microsoft.EntityFrameworkCore;
+using System.Threading;
 
 namespace e_potreba.Infrastructure.Repositories;
 public class BaseRepository<T> : IBaseRepository<T>
-    where T : class
+    where T : BaseEntity
 {
-    public void Create(T entity)
+    private readonly DbContext _dbContext;
+    private readonly DbSet<T> _table;
+
+    public BaseRepository(MsSqlDatabaseContext dbContext)
     {
-        throw new NotImplementedException();
+        _dbContext = dbContext;
+        _table = _dbContext.Set<T>();
     }
 
-    public void Delete(T entity)
-    {
-        throw new NotImplementedException();
-    }
+    public async void Create(T entity) =>
+        await _table.AddAsync(entity);
 
-    public Task<List<T>> GetAll()
-    {
-        throw new NotImplementedException();
-    }
+    public void Delete(T entity) =>
+        _table.Remove(entity);
 
-    public Task<T> GetById(Guid id)
-    {
-        throw new NotImplementedException();
-    }
+    public Task<List<T>> GetAll(CancellationToken cancellation) => 
+        _table.ToListAsync(cancellation);
 
-    public void Update(T entity)
-    {
-        throw new NotImplementedException();
-    }
+    public Task<T> GetById(Guid id, CancellationToken cancellation) =>
+        _table.FirstOrDefaultAsync(x => x.Id == id, cancellation);
+
+    public void Update(T entity) =>
+        _table.Update(entity);
 }
