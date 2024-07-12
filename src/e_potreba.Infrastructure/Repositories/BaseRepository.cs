@@ -2,7 +2,6 @@
 using e_potreba.Domain.Entity.Common;
 using e_potreba.Infrastructure.DatabaseContext;
 using Microsoft.EntityFrameworkCore;
-using System.Threading;
 
 namespace e_potreba.Infrastructure.Repositories;
 public class BaseRepository<T> : IBaseRepository<T>
