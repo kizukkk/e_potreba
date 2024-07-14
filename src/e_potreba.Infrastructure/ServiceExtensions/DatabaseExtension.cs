@@ -15,7 +15,27 @@ public static class DatabaseExtension
         var targetDatabase = configuration.GetSection("TargetDatabase").Value;
         var connectionString = configuration.GetConnectionString(targetDatabase);
 
-        services.AddDbContext<MsSqlDatabaseContext>(opt => opt.UseSqlServer(connectionString));
+        services.AddDbContext<MsSqlDatabaseContext>(opt =>
+        {
+            opt.UseSqlServer(
+                connectionString,
+                sqlServerOptionsAction: sqlOptitons =>
+                {
+                    sqlOptitons.EnableRetryOnFailure(
+                        maxRetryCount: 3,
+                        maxRetryDelay: TimeSpan.FromSeconds(15),
+                        errorNumbersToAdd: null
+                        );
+                }).LogTo(
+                    filter:(eventId, level) => eventId.Id == CoreEventId.ExecutionStrategyRetrying,
+                    logger: (eventData) =>
+                    {
+                        var retryEventData = eventData as ExecutionStrategyEventData;
+                        var exceptions = retryEventData!.ExceptionsEncountered;
+                        Console.WriteLine($"Retry #{exceptions.Count} with delay {retryEventData.Delay} due to error: {exceptions.Last().Message}");
+                    }
+            );
+        });
     }
     public static void DatabaseMigrate(
         this IServiceScope serviceScope
