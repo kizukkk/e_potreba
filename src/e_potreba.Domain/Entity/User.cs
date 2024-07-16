@@ -4,9 +4,9 @@ using e_potreba.Domain.Enum;
 namespace e_potreba.Domain.Entity;
 public class User: BaseEntity 
 {
-    public required string Login;
-    public required string HashPassword;
-    public required string Email;
-    public bool IsEmailConfirmed = false;
-    public required UserRole Role = UserRole.common;
+    public required string Login{ get; set; }
+    public required string HashPassword{ get; set; }
+    public required string Email{ get; set; }
+    public bool IsEmailConfirmed { get; set; } = false;
+    public required UserRole Role { get; set; } = UserRole.common;
 }
