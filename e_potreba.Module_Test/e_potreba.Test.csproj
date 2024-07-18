@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\e_potreba.API\e_potreba.API.csproj" />
+    <ProjectReference Include="..\src\e_potreba.Application\e_potreba.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>
