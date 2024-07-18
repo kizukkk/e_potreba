@@ -42,19 +42,6 @@ app.Lifetime.ApplicationStopped.Register(() =>
 });
 
 
-//Temp error handler
-app.Use(async (context, next) =>
-{
-    try
-    {
-        await next(context);
-    }
-    catch
-    {
-        context.Response.StatusCode = 500;
-    }
-});
-
 app.MapControllers();
 
 app.Run();
