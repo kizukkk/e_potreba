@@ -3,6 +3,8 @@ using e_potreba.Application.Service.AuthServices;
 using e_potreba.Infrastructure.Repositories;
 using e_potreba.Infrastructure.ServiceExtensions;
 using e_potreba.Infrastructure.Policy;
+using e_potreba.Infrastructure.DatabaseContext;
+using Microsoft.EntityFrameworkCore;
 using Polly;
 using e_potreba.Infrastructure.DatabaseContext;
 using Microsoft.EntityFrameworkCore;
@@ -23,20 +25,24 @@ builder.Services.AddResiliencePipeline("default-pipeline", builder =>
 });
 var app = builder.Build();
 
-DatabaseExtension.DatabaseMigrate(app.Services.CreateScope()); 
+DatabaseExtension.DatabaseMigrate(app.Services.CreateScope());
 
-//Temp error handler
-app.Use(async (context, next) =>
+app.Lifetime.ApplicationStopped.Register(() =>
 {
-    try
+    Console.WriteLine("\nI'm shutdown...");
+    var dataContext = app.Services.CreateScope().ServiceProvider.GetService<MsSqlDatabaseContext>();
+    var tablse = dataContext!.Model.GetEntityTypes()
+        .Select(t => t.GetTableName())
+        .Distinct()
+        .ToList();
+
+    foreach (var t in tablse)
     {
-        await next(context);
-    }
-    catch
-    {
-        context.Response.StatusCode = 500;
+        Console.WriteLine($"\tDroping rows in {t} table:");
+        dataContext.Database.ExecuteSqlRaw($"TRUNCATE TABLE {t}");
     }
 });
+
 
 app.MapControllers();
 
