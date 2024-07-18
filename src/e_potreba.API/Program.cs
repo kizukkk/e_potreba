@@ -6,6 +6,8 @@ using e_potreba.Infrastructure.Policy;
 using e_potreba.Infrastructure.DatabaseContext;
 using Microsoft.EntityFrameworkCore;
 using Polly;
+using e_potreba.Infrastructure.DatabaseContext;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +15,7 @@ builder.Services.DatabaseConfig(builder.Configuration);
 builder.Services.AddControllers();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddSingleton<UserRegistryService>();
+builder.Services.AddTransient<UserRegistryService>();
 
 builder.Services.AddResiliencePipeline("default-pipeline", builder =>   
 {

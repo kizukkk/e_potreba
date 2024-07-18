@@ -21,6 +21,15 @@ public class MsSqlDatabaseContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Toilet>(entity =>
+        {
+            entity.OwnsOne(e => e.Point, point =>
+            {
+                point.Property(p => p.longitude).HasColumnName("Longitude");
+                point.Property(p => p.latitude).HasColumnName("Latitude");
+            });
+        });
+
         base.OnModelCreating(modelBuilder);
     }
 
