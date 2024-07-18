@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace e_potreba.API.Endpoints.UserEndpoints;
 
-[Route("api/v1/users/registry")]
+[Route("api/v1/users/auth")]
 public class RegistryUserEndpoint : EndpointBaseSync
     .WithRequest<UserRequest>
     .WithActionResult<AuthUserResponse>
