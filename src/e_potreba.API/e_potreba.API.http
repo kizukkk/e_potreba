@@ -4,7 +4,7 @@ GET {{e_potreba.API_HostAddress}}/api/v1/users
 Accept: application/json
 ###
 
-POST {{e_potreba.API_HostAddress}}/api/v1/users/registry
+POST {{e_potreba.API_HostAddress}}/api/v1/users/auth
 Content-Type: application/json
 
 {
